@@ -1,0 +1,24 @@
+<project default="build">
+  <target name="build">
+    <delete dir="classes" />
+    <mkdir dir="classes" />
+    <javac destdir="classes">
+      <src path="src" />
+      <classpath>
+        <pathelement location="C:\Program Files\FireStormDAO-4.0.1\jars\hibernate3.jar" />
+        <pathelement location="C:\Program Files\FireStormDAO-4.0.1\jars\j2ee.jar" />
+        <pathelement location="C:\Program Files\FireStormDAO-4.0.1\jars\log4j-1.2.8.jar" />
+      </classpath>
+    </javac>
+    <jar jarfile="stp.jar" baseDir="classes">
+      <metainf dir="conf" />
+    </jar>
+    <war destfile="stp.war" baseDir="webapp" webxml="webapp/WEB-INF/web.xml">
+      <lib file="stp.jar" />
+      <lib file="C:\Program Files\FireStormDAO-4.0.1\jars\log4j-1.2.8.jar" />
+    </war>
+    <ear destfile="stp.ear" appxml="application.xml">
+      <fileset dir="." includes="stp*.jar,stp*.war" />
+    </ear>
+  </target>
+</project>

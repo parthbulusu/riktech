@@ -1,0 +1,454 @@
+
+.TblBgColor {
+    background-color: #FFFFFF;
+}
+.TblCalendarBgColor {
+    background-color: #F5F5F5;
+}
+.TblCalendarFont {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+.TblContentBgColor2 {
+    background-color: #F5F5F5;
+}
+.TblContentBgColor3 {
+    background-color: #E9E9E9;
+}
+.TblContentBgColor4 {
+    background-color: #F5F5F5;
+}
+.TblContentBgColor5 {
+    background-color: #E6E6E6;
+}
+.TblContentFont2 {
+    color: #000000;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 13px;
+}
+.TblContentFont3 {
+    color: #000000;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 13px;
+}
+.TblContentFont4 {
+    color: #000000;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 13px;
+}
+.TblContentFont5 {
+    color: #AD3BFB;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+.TblFooterBgColor {
+    background-color: #FFFFFF;
+}
+.TblFooterFont {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 10px;
+}
+.TblHeaderBgColor {
+    background-color: #99CCFF;
+}
+.TblHeaderBgColor2 {
+    background-color: #E7E7E7;
+}
+.TblHeaderFont {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.TblHeaderFont2 {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.TblHeaderFont3 {
+    color: #0065CC;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.TblTitleBgColor {
+    background-color: silver;
+}
+.TblTitleFont {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+.WelLabFont2 {
+    color: #000000;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.TblTitleFont2 {
+    color: #FFCF00;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.TopLineColor {
+    color: #FFFFFF;
+}
+.WelContentFont {
+    color: #000000;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+.WelContentFontBC {
+    background-color: #EDEDED;
+}
+.WelLabFont {
+    color: #0066CC;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 10px;
+}
+.WelPageTitleFont {
+    color: #000000;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+.WelPageTitleFontBC {
+    background-color: #99CCFF;
+}
+.mwBgColor {
+    background-color: #FFFFFF;
+}
+.mwFirstHRule {
+    color: #FFFFFF;
+}
+.mwHorizontalRule1 {
+    color: #FFFFFF;
+}
+.mwHorizontalRule2 {
+    color: #999999;
+}
+.mwMoreServiceIconColor {
+    color: #FFFFFF;
+}
+.mwNavigationColor2 {
+    background-color: #999999;
+}
+.mwNavigationFont2 {
+    color: #FFFFFF;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.mwPageBgColor {
+    background-color: #FFFFFF;
+}
+.mwPageFont {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 10px;
+}
+.mwPageTitleBgColor {
+    background-color: silver;
+}
+.mwPageTitleFont {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+.mwRightLineColor {
+    background-color: #CDCDCD;
+}
+.mwSctHeaderBgColor {
+    background-color: #E7E7E7;
+}
+.mwSelTabBgColor {
+    background-color: #014386;
+}
+.mwSelTabFont {
+    color: #FFFFFF;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+}
+.mwSltTopNavigationBgColor {
+    background-color: #0080FF;
+}
+.mwTabBgColor {
+    background-color: #89E600;
+}
+.mwTabFont {
+    color: #000000;
+    font-family: Verdana;
+    font-size: 10px;
+    font-weight: bold;
+}
+.mwTblBgColor {
+    background-color: #FFFFFF;
+}
+.mwTblContentFont {
+    color: #000000;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+.mwTblHeaderBgColor {
+    background-color: #99CCFF;
+}
+.mwTblHeaderFont {
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.mwTblRuleBgColor {
+    background-color: #EEEEEE;
+}
+.mwTopNavigationBgColor {
+    background-color: #0480FF;
+}
+.mwTopNavigationFont {
+    color: #FFFFFF;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+}
+.mwTopNavigationVRule {
+    color: #FFFFFF;
+}
+.mwWelcomeFont {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.BodyBgColor {
+    background-color: #00659C;
+}
+.BottomLineColor {
+    color: #575757;
+}
+.BtBarBgColor {
+    background-color: #F5F5F5;
+}
+.BtBarFont {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+}
+.HighlightFont {
+    color: #9900FF;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+.MenuActiveFont {
+    color: #FF0000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 10px;
+}
+.MenuBgColor {
+    background-color: #E7E7E7;
+    background-image: url("/stp/images/menuground.gif");
+}
+.MenuTextFont {
+    color: #0066CC;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.MenuTitleFont {
+    color: #000000;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.MiddleLineColor {
+    color: #B5B5B5;
+}
+.MonthFont {
+    color: #FF6600;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.PageBgColor {
+    background-color: #FFFFFF;
+}
+.PageFont {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+.PageTitleFont {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+.SLColor {
+    background-color: #00659C;
+}
+.TabBgColor {
+    background-color: #E7E7E7;
+}
+.TabBorderColor {
+    color: #999999;
+}
+.TabFont {
+    color: #000000;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+.TblSetupFont {
+    color: #0172E3;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+}
+.TblInProgressBorderColor {
+    color: #FEAD00;
+}
+.TblInProgressBgColor {
+    background-color: #FAFAE1;
+}
+.TblNormalBgColor {
+    background-color: #EBEBEB;
+}
+.TblInProgressBarBgColor {
+    background-color: #F5F59D;
+}
+.TblNormalBarBgColor {
+    background-color: #E2E2E2;
+}
+.TblSixthFont {
+    color: #6A6A6A;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 13px;
+}
+.TblSeventhFont {
+    color: #000000;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 10px;
+}
+.TblMonthly3rdTitleFont {
+    color: #6A6A6A;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 10px;
+}
+.TblMonthly1stBgColor {
+    background-color: #C5DFF8;
+}
+.TblMonthly2ndBgColor {
+    background-color: #E8EEF7;
+}
+.TblPastHeaderBgColor {
+    background-color: #DCDCDC;
+}
+.TblLighterBgColor {
+    background-color: #FFFFFF;
+}
+.TblDarkerBgColor {
+    background-color: #F4F4F4;
+}
+.TblProgramDesFont {
+    color: #707070;
+    font-family: Arial,Verdana,Helvetica,sans-serif;
+    font-size: 13px;
+}
+.TblProgramBarFont {
+    color: #006DB8;
+    font-family: Arial,Verdana,Helvetica,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.TblECBgColor {
+    background-color: #F8F8F8;
+}
+.TblECInProgressBgColor {
+    background-color: #F8F8F8;
+}
+.TblECInProgressBarBgColor {
+    background-color: #E2E2E2;
+}
+.TblMonthValidFont {
+    color: #0066CC;
+    font-family: Arial,Verdana,Helvetica,sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+.TblMonthInvalidFont {
+    color: #646464;
+    font-family: Arial,Verdana,Helvetica,sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+.TblECHeaderFont {
+    color: #0066CC;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.TblHyperlinkColor2 {
+    color: #0066CC;
+}
+.TblHyperlinkColor3 {
+    color: #0066CC;
+}
+.TblHyperlinkColor7 {
+    color: #0066CC;
+}
+.TblHeaderHyperlinkColor2 {
+    color: #0066CC;
+}
+#topbar ul.menu-center{
+	list-style: none;
+	margin: 2px;
+	float:left;
+	width:45%;
+	padding-top:2px;
+	padding-left:10px;
+	padding-right:10px;
+}
+#topbar ul.menu-left{
+	list-style: none;
+	float:left;
+	width:38%;
+	padding-left:10px;
+	padding-right:10px;
+	margin:2px;
+}
+#topbar ul.menu-right{
+	padding-top:2px;
+	padding-right:10px;
+	list-style: none;
+
+
+}
+
+#topbar ul li{
+	padding-left:10px;
+	padding-right:10px;
+	float:left;
+    font-family: Verdana,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+	color: white;
+}
+#topbar ul li a{
+	color: white;
+}
+#topbar ul li a:hover{
+
+    color: orange;
+}
+#topbar ul li.selected{
+	background-color:orange;
+}
+#topbar ul li.selected a:hover{
+	color: white;
+}

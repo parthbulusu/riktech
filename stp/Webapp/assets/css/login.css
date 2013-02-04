@@ -1,0 +1,49 @@
+.signin-box {
+	float:right;
+	width:20%;
+	background: none repeat scroll 0 0 #F1F1F1;
+	border: 1px solid #E5E5E5;
+	margin:20px;
+	padding:20px 25px 15px;
+}
+.signin-box h2 {
+    font-size: 16px;
+    height: 16px;
+    line-height: 17px;
+    margin: 0 0 1.2em;
+    position: relative;
+    font-weight:normal;
+}
+.signin-box form{
+	margin:2px;
+	padding:0;
+	border:0 none;
+}
+.signin-box label{
+	display:block;
+}
+.signin-box ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+	border:0 none;	
+}
+.signin-box ul li{
+	margin:0 0 1.5em;
+}
+.signin-box input[type="email"], .signin-box input[type="text"], .signin-box input[type="password"] {
+    font-size: 15px;
+    height: 32px;
+    width: 100%;
+}
+.signin-box .username-label, .signin-box .password-label {
+    -moz-user-select: none;
+    display: block;
+    font-weight: bold;
+    margin: 0 0 0.5em;
+}
+
+
+.loginHelp{
+	width:70%;
+}

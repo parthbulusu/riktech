@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<web-app 
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+    version="3.0">
+  <display-name>stp</display-name>
+  <servlet>
+    <servlet-name>Action</servlet-name>
+    <servlet-class>com.riktech.stp.servlet.WebController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Default</servlet-name>
+    <jsp-file>/browse/browseKnowledgeBase.jsp</jsp-file>
+  </servlet>
+ <servlet>
+  	<description>
+  	</description>
+  	<display-name>AppController</display-name>
+  	<servlet-name>AppController</servlet-name>
+  	<servlet-class>com.riktech.stp.controller.AppController</servlet-class>
+  </servlet>  
+ 
+  <servlet-mapping>
+    <servlet-name>Action</servlet-name>
+    <url-pattern>/action</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+  	<servlet-name>AppController</servlet-name>
+  	<url-pattern>/logout</url-pattern>
+  	<url-pattern>/home</url-pattern>
+  	<url-pattern>/addComment</url-pattern>
+  	<url-pattern>/showComments</url-pattern>
+  </servlet-mapping>
+  	<resource-ref>
+      	<description>DB Connection</description>
+      	<res-ref-name>jdbc/stp</res-ref-name>
+      	<res-type>javax.sql.DataSource</res-type>
+      	<res-auth>Container</res-auth>
+ 	</resource-ref>  
+	<security-constraint> 
+        <web-resource-collection> 
+            <web-resource-name>Stp Browse</web-resource-name> 
+            <url-pattern>/action</url-pattern> 
+            <url-pattern>/home</url-pattern> 
+            <url-pattern>/browse/*</url-pattern> 
+            <url-pattern>/find/*</url-pattern> 
+        </web-resource-collection> 
+        <auth-constraint> 
+        	<role-name>stp-admin</role-name> 
+            <role-name>stp-browse</role-name> 
+        </auth-constraint> 
+    </security-constraint> 
+	<security-constraint> 
+        <web-resource-collection> 
+            <web-resource-name>Stp Admin</web-resource-name> 
+            <url-pattern>/edit/*</url-pattern> 
+        </web-resource-collection> 
+        <auth-constraint> 
+            <role-name>stp-admin</role-name> 
+        </auth-constraint> 
+    </security-constraint> 
+    <security-role> 
+		<role-name>stp-admin</role-name> 
+	</security-role> 
+    <security-role> 
+		<role-name>stp-browse</role-name> 
+	</security-role> 	
+    <login-config> 
+        <auth-method>FORM</auth-method>
+        <realm-name>stp</realm-name> 
+        <form-login-config> 
+            <form-login-page>/secure/login.jsp</form-login-page>
+            <form-error-page>/secure/login-error.jsp</form-error-page> 
+        </form-login-config> 
+    </login-config>
+ 
+</web-app>
+
