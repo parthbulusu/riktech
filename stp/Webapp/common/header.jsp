@@ -23,7 +23,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>	
 
-<html><%-- Ends in footer --%>
+<!DOCTYPE HTML>
+<html>
 <head>
 	<script type="text/javascript">
 		var isScenarioBased=<%=ts_id%>;
@@ -34,6 +35,7 @@
 	<script type="text/javascript" src="/stp/assets/js/jquery.jscrollpane.min.js"></script>	
 	<script type="text/javascript" src="/stp/assets/js/handlebars-1.0.rc.1.min.js"></script>
 	<script type="text/javascript" src="/stp/assets/js/jquery.mousewheel.js"></script>
+	<script type="text/javascript" src="/stp/assets/js/stputils.js"></script>
 	<link href="/stp/assets/css/jquery.jscrollpane.css" type="text/css" rel="stylesheet">
 	<link href="/stp/assets/css/nl_brand.css" type="text/css" rel="stylesheet">
 	<link href="/stp/assets/css/nl_default.css" type="text/css" rel="stylesheet">
@@ -65,6 +67,10 @@
 			 <li class="menu-item">Welcome ${userProfile.firstName} ${userProfile.lastName}</li>
 			</ul>
 			<ul class="menu-right ">
+			<c:if test="${userProfile.adminRole}">
+				<li class="menu-item"><a href="/stp/qbAdminHome">Admin</a></li>
+			</c:if>
+
 			 <li class="menu-item"><a href="/stp/logout">Logout</a></li>
 			</ul>			
 		</c:if>

@@ -40,12 +40,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( ID, NAME, PARENT_ID, QUESTION_ID ) VALUES ( ?, ?, ?, ? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( NAME, PARENT_ID, QUESTION_ID ) VALUES ( ?, ?, ? )";
 
 	/** 
 	 * SQL UPDATE statement for this table
 	 */
-	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET ID = ?, NAME = ?, PARENT_ID = ?, QUESTION_ID = ? WHERE ID = ?";
+	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET  NAME = ?, PARENT_ID = ?, QUESTION_ID = ? WHERE ID = ?";
 
 	/** 
 	 * SQL DELETE statement for this table
@@ -100,7 +100,6 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		
 			stmt = conn.prepareStatement( SQL_INSERT );
 			int index = 1;
-			stmt.setLong( index++, dto.getId() );
 			stmt.setString( index++, dto.getName() );
 			if (dto.isParentIdNull()) {
 				stmt.setNull( index++, java.sql.Types.INTEGER );
@@ -162,7 +161,6 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		
 			stmt = conn.prepareStatement( SQL_UPDATE );
 			int index=1;
-			stmt.setLong( index++, dto.getId() );
 			stmt.setString( index++, dto.getName() );
 			if (dto.isParentIdNull()) {
 				stmt.setNull( index++, java.sql.Types.INTEGER );
@@ -280,6 +278,13 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	public ArrayList<Technology> findWhereNameEquals(String name) throws TechnologyDaoException
 	{
 		return findByDynamicSelect( SQL_SELECT + " WHERE NAME = ? ORDER BY NAME", new Object[] { name } );
+	}
+	/** 
+	 * Returns all rows from the TECHNOLOGY table that match the criteria 'NAME = :name'.
+	 */
+	public ArrayList<Technology> findWhereNameLike(String name) throws TechnologyDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE NAME LIKE ? ORDER BY NAME", new Object[] { name } );
 	}
 
 	/** 

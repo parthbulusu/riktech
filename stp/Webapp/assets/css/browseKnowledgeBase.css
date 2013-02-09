@@ -1,38 +1,4 @@
-#headerWrapper a
-{
-	float:right;
-	margin:4px;
-	cursor: hand;
-}
-#layoutWrapper
-{
-	margin:15px 5px 15px 0px;
-	padding-left:20px;
-	padding-right:20px;
-}
 
-#layoutWrapper .nl_text
-{
-    border-collapse: separate;
-    border-spacing: 0;
-    color: #525252;
-    empty-cells: hide;
-    font-family: arial,helvetica,clean,sans-serif;
-    font-size: 13px;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: normal;
-    line-height: 1.66em;	
-	background-color:white;
-}
-#layoutWrapper h1{
-	background-color: silver;
-	padding-left:10px;
-	color: #000000;
-    font-family: Verdana, Geneva, sans-serif;
-    font-size: 18px;
-    font-weight: bold;
-}
 #kb-container{
 	width:52%;
 	float:left;

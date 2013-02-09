@@ -138,16 +138,3 @@ function addTile(data,templateId)
 	$(".kb-tile").show('slow');
 	applyScroll();
 }
-function error()
-{
-	alert("error");
-}
-function ajaxPost(url,data,successFunction,failureFunction){
-	$.ajax({
-	    type: "POST",
-	    url: url,
-	    data: data,
-	    success: successFunction,
-	    failure: failureFunction
-	});
-}

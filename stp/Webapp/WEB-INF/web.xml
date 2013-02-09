@@ -32,6 +32,11 @@
   	<url-pattern>/home</url-pattern>
   	<url-pattern>/addComment</url-pattern>
   	<url-pattern>/showComments</url-pattern>
+  	<url-pattern>/qbAdminHome</url-pattern>
+  	<url-pattern>/searchQuestionBank</url-pattern>
+  	<url-pattern>/searchTechnology</url-pattern>
+  	<url-pattern>/saveAnswerChoice</url-pattern>
+  	<url-pattern>/saveTechnology</url-pattern>
   </servlet-mapping>
   	<resource-ref>
       	<description>DB Connection</description>
@@ -55,7 +60,11 @@
 	<security-constraint> 
         <web-resource-collection> 
             <web-resource-name>Stp Admin</web-resource-name> 
-            <url-pattern>/edit/*</url-pattern> 
+            <url-pattern>/qbAdminHome/*</url-pattern> 
+            <url-pattern>/searchQuestionBank/*</url-pattern> 
+            <url-pattern>/searchTechnology/*</url-pattern> 
+            <url-pattern>/saveAnswerChoice/*</url-pattern>
+            <url-pattern>/saveTechnology/*</url-pattern>
         </web-resource-collection> 
         <auth-constraint> 
             <role-name>stp-admin</role-name> 

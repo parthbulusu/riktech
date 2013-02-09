@@ -33,7 +33,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * All finder methods in this class use this SELECT constant to build their queries
 	 */
-	protected final String SQL_SELECT = "SELECT USER_NAME, USER_PASS, FIRST_NAME, LAST_NAME, EMAIL FROM " + getTableName() + "";
+	protected final String SQL_SELECT = "SELECT USER_NAME, USER_PASS, FIRST_NAME, LAST_NAME, EMAIL,ROLE_NAME FROM V_USERS";
 
 	/** 
 	 * Finder methods will pass this value to the JDBC setMaxRows method
@@ -80,10 +80,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	 */
 	protected static final int COLUMN_EMAIL = 5;
 
+	
+	protected static final int COLUMN_ROLE_NAME=6;
 	/** 
 	 * Number of columns
 	 */
-	protected static final int NUMBER_OF_COLUMNS = 5;
+	protected static final int NUMBER_OF_COLUMNS = 6;
 
 	/** 
 	 * Index of primary-key column USER_NAME
@@ -380,6 +382,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		dto.setFirstName( rs.getString( COLUMN_FIRST_NAME ) );
 		dto.setLastName( rs.getString( COLUMN_LAST_NAME ) );
 		dto.setEmail( rs.getString( COLUMN_EMAIL ) );
+		dto.setRole( rs.getString( COLUMN_ROLE_NAME ) );
 	}
 
 	/** 

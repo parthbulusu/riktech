@@ -17,8 +17,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.riktech.stp.dao.UsersDao;
 import com.riktech.stp.dto.BasicDTO;
+import com.riktech.stp.dto.Users;
 import com.riktech.stp.exceptions.UsersDaoException;
+import com.riktech.stp.factory.UsersDaoFactory;
 import com.riktech.stp.utils.StpServletUtils;
 
 /**
@@ -146,7 +149,13 @@ public class BaseController extends HttpServlet {
 		}
 	}
 	protected boolean beforeProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, UsersDaoException{
-		request.getSession().setAttribute("userProfile", StpServletUtils.getUserProfile(request.getRemoteUser()));
+		Users user=null;
+		if(request.getSession().getAttribute("userProfile")==null)
+	  	{
+	  		UsersDao udao=UsersDaoFactory.create();
+	  		user=udao.findByPrimaryKey(request.getRemoteUser());
+	  		request.getSession().setAttribute("userProfile", user);
+	  	}
 		return true;
 	}
 	private boolean isActionReserveWord(String action) {

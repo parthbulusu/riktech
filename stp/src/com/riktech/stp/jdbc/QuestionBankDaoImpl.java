@@ -42,12 +42,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( ID, QUESTION ) VALUES ( ?, ? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( QUESTION ) VALUES ( ? )";
 
 	/** 
 	 * SQL UPDATE statement for this table
 	 */
-	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET ID = ?, QUESTION = ? WHERE ID = ?";
+	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " QUESTION = ? WHERE ID = ?";
 
 	/** 
 	 * SQL DELETE statement for this table
@@ -84,26 +84,36 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		final boolean isConnSupplied = (userConn != null);
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		ResultSet rs = null;
+		ResultSet rs = null;		
 		
 		try {
 			// get the user-specified connection or get a connection from the ResourceManager
 			conn = isConnSupplied ? userConn : ResourceManager.getConnection();
 		
-			stmt = conn.prepareStatement( SQL_INSERT );
+			stmt = conn.prepareStatement( SQL_INSERT ,Statement.RETURN_GENERATED_KEYS);
 			int index = 1;
-			stmt.setLong( index++, dto.getId() );
 			stmt.setString( index++, dto.getQuestion() );
 			if (logger.isDebugEnabled()) {
 				logger.debug( "Executing " + SQL_INSERT + " with DTO: " + dto);
 			}
 		
 			int rows = stmt.executeUpdate();
+		    long autoIncKeyFromApi = -1;
+
+		    rs = stmt.getGeneratedKeys();
+
+		    if (rs.next()) {
+		        autoIncKeyFromApi = rs.getLong(1);
+		    } else {
+
+		        // throw an exception from here
+		    }
+			
 			long t2 = System.currentTimeMillis();
 			if (logger.isDebugEnabled()) {
 				logger.debug( rows + " rows affected (" + (t2-t1) + " ms)");
 			}
-		
+			dto.setId(autoIncKeyFromApi);
 			reset(dto);
 			return dto.createPk();
 		}
@@ -142,7 +152,6 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		
 			stmt = conn.prepareStatement( SQL_UPDATE );
 			int index=1;
-			stmt.setLong( index++, dto.getId() );
 			stmt.setString( index++, dto.getQuestion() );
 			stmt.setLong( 3, pk.getId() );
 			int rows = stmt.executeUpdate();
@@ -249,7 +258,13 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	{
 		return findByDynamicSelect( SQL_SELECT + " WHERE QUESTION = ? ORDER BY QUESTION", new Object[] { question } );
 	}
-
+	/** 
+	 * Returns all rows from the QUESTION_BANK table that match the criteria 'QUESTION = :question'.
+	 */
+	public ArrayList<QuestionBank> findWhereQuestionLike(String term) throws QuestionBankDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE QUESTION like ? ORDER BY QUESTION", new Object[] { term } );
+	}
 	/**
 	 * Method 'QuestionBankDaoImpl'
 	 * 

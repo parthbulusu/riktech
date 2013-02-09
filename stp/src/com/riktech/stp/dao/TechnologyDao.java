@@ -47,6 +47,10 @@ public interface TechnologyDao
 	 * Returns all rows from the TECHNOLOGY table that match the criteria 'NAME = :name'.
 	 */
 	public ArrayList<Technology> findWhereNameEquals(String name) throws TechnologyDaoException;
+	/** 
+	 * Returns all rows from the TECHNOLOGY table that match the criteria 'NAME like :name'.
+	 */
+	public ArrayList<Technology> findWhereNameLike(String name) throws TechnologyDaoException;
 
 	/** 
 	 * Returns all rows from the TECHNOLOGY table that match the criteria 'PARENT_ID = :parentId'.

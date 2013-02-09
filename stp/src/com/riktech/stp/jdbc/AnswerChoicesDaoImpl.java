@@ -42,7 +42,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( ID, CURRENT_QUEST_ID, ANS_CHOICE, NEXT_QUEST_ID ) VALUES ( ?, ?, ?, ? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( CURRENT_QUEST_ID, ANS_CHOICE, NEXT_QUEST_ID ) VALUES ( ?, ?, ? )";
 
 	/** 
 	 * SQL UPDATE statement for this table
@@ -102,7 +102,6 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		
 			stmt = conn.prepareStatement( SQL_INSERT );
 			int index = 1;
-			stmt.setLong( index++, dto.getId() );
 			if (dto.isCurrentQuestIdNull()) {
 				stmt.setNull( index++, java.sql.Types.INTEGER );
 			} else {

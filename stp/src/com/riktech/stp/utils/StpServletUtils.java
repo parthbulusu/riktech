@@ -8,14 +8,6 @@ import com.riktech.stp.factory.UsersDaoFactory;
 
 public class StpServletUtils {
 	private static Users ref;
-    public static Users getUserProfile(String userName) throws UsersDaoException
-    {
-      if (ref == null)
-      {
-    	  UsersDao udao=UsersDaoFactory.create();
-    	  ref=udao.findByPrimaryKey(userName);
-      }
-      return ref;
-    }	
+ 
 
 }

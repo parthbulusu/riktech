@@ -34,6 +34,14 @@ public class Technology extends BasicDTO
 	 * This attribute represents whether the primitive attribute questionId is null.
 	 */
 	protected boolean questionIdNull = true;
+	protected String question;
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
 
 	/**
 	 * Method 'Technology'

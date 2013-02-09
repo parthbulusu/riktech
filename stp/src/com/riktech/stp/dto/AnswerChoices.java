@@ -27,7 +27,7 @@ public class AnswerChoices extends BasicDTO
 	/** 
 	 * This attribute maps to the column NEXT_QUEST_ID in the ANSWER_CHOICES table.
 	 */
-	protected long nextQuestId;
+	protected long nextQuestId=-1;
 
 	/** 
 	 * This attribute represents whether the primitive attribute nextQuestId is null.

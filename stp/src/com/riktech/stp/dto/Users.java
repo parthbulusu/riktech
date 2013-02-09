@@ -9,6 +9,9 @@ import java.util.*;
 
 public class Users   extends BasicDTO
 {
+	
+	public static final String BROWSE_ROLE="stp-browse";
+	public static final String ADMIN_ROLE="stp-admin";
 	/** 
 	 * This attribute maps to the column USER_NAME in the USERS table.
 	 */
@@ -34,6 +37,22 @@ public class Users   extends BasicDTO
 	 */
 	protected String email;
 
+	protected String role;
+	public String getRole() {
+		return role==null?"":role.trim();
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+	public boolean isAdminRole()
+	{
+		return role.equals(ADMIN_ROLE);
+	}
+	public boolean isBrowseRole()
+	{
+		return role.equals(BROWSE_ROLE);
+	}
 	/**
 	 * Method 'Users'
 	 * 

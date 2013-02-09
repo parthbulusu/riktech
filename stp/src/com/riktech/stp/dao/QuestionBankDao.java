@@ -69,4 +69,6 @@ public interface QuestionBankDao
 	 */
 	public ArrayList<QuestionBank> findByDynamicWhere(String sql, Object[] sqlParams) throws QuestionBankDaoException;
 
+	public ArrayList<QuestionBank> findWhereQuestionLike(String string) throws QuestionBankDaoException;
+
 }
