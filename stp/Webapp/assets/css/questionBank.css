@@ -1,0 +1,27 @@
+.treeNodeDiv form{
+	margin-left:15px;
+	padding-bottom:10px;
+	padding-top:10px;
+	border-left:5px solid #CCCCCC;
+	display:block;
+	clear:both;
+	background-color:#EEEEEE;
+}
+#existingTech,#existingQuest{
+	width:400px;
+}
+.treeNodeDiv a{
+    font: bold 11px Arial;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;	
+}
+.treeNodeDiv textarea,.treeNodeDiv input{
+	display:block;
+	float:left;
+}
