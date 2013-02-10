@@ -63,7 +63,7 @@ var displayComments = function(input) {
    return function(output) {
 		var source = $("#hb-commentslist").html(); 
 		var template = Handlebars.compile(source); 
-		var jsonObj=template(jQuery.parseJSON(output));
+		var jsonObj=template(output);
 		$("#commentsList"+input[input['identifierName']]).html(jsonObj);
 		/*$("#commentsList"+input[input['identifierName']]).css('height:20%;','width: 100%;','overflow: auto;');
 		$("#commentsList"+input[input['identifierName']]).jScrollPane(

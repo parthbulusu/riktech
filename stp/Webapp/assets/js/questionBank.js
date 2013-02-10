@@ -31,7 +31,7 @@ var showNextActionsForT = function(ref) {
 	ref.siblings('#addNewQuestBtn').hide();
 	ref.hide();
 	return function(data) {
-    	var jsonObj=jQuery.parseJSON(data);
+    	var jsonObj=data;
     	var techObj=jsonObj['json-result'][0];
     	ref.siblings("#id").val(techObj['id']);
     	if(techObj.questionId>1)
@@ -54,7 +54,7 @@ var showNextActionsForAc = function(ref) {
 	ref.siblings('#addNewQuestBtn').hide();
 	ref.hide();
 	return function(data) {
-    	var jsonObj=jQuery.parseJSON(data);
+    	var jsonObj=data;
     	var techObj=jsonObj['json-result'][0];
     	ref.siblings("#id").val(techObj['nextQuestId']);
     	if(techObj.nextQuestId>1)
@@ -101,12 +101,36 @@ function searchAutoCompleteQB()
  
 }
 function saveSubTechnology(){
-	var data=$(this).parent().serializeObject();
-	ajaxPost("/stp/saveTechnology",data,showNextActionsForT($(this)),error);
+
+	var name=$(this).siblings('#name').val();
+	
+	name=$.trim(name);
+	if(name){
+		var data=$(this).parent().serializeObject();
+		ajaxPost("/stp/saveTechnology",data,showNextActionsForT($(this)),error);
+	}else{
+		alert("Technology is required");
+		return false;
+	}
 }
 function saveAnswerChoice(){
-	var data=$(this).parent().serializeObject();
-	ajaxPost("/stp/saveAnswerChoice",data,showNextActionsForAc($(this)),error);
+	var newQuest=$(this).siblings('#newQuest').val();
+	var questionId=$(this).siblings('#questionId').val();
+	var ansChoice=$(this).siblings('#ansChoice').val();
+	newQuest=$.trim(newQuest);
+	ansChoice=$.trim(ansChoice);
+	if(ansChoice && (questionId || newQuest))
+	{
+		var data=$(this).parent().serializeObject();
+		ajaxPost("/stp/saveAnswerChoice",data,showNextActionsForAc($(this)),error);
+	}else{
+		if(!ansChoice){
+			alert("Answer Choice is required");
+		}else{
+			alert("Question is required");
+		}
+		return false;
+	}
 }
 $(document).ready(function() {
 	 $('#bodyWrapper .treeNodeDiv').delegate('.treeNodeDiv #technologyForm #addAC,.treeNodeDiv #answerChoiceForm #addAC','click',addAnswerChoiceDiv);
@@ -189,8 +213,8 @@ $(document).ready(function() {
 });
 function addAnswerChoiceDiv()
 {
-	$(this).parent().append($('#acTemplate').html());
-	var answerChoiceForm=$(this).siblings('.treeNodeDiv').children("#answerChoiceForm");
+	$(this).parent().parent().append($('#acTemplate').html());
+	var answerChoiceForm=$(this).parent().siblings('.treeNodeDiv').children("#answerChoiceForm");
 	answerChoiceForm.children('#currentQuestionId').val($(this).siblings('#questionId').val());
 }
 function addAnswerChoiceFirstDiv(item,elem)
@@ -204,8 +228,9 @@ function addAnswerChoiceFirstDiv(item,elem)
 }
 function addSubTechnologyDiv()
 {
-	$(this).parent().append($('#techTemplate').html());
-	var technologyForm=$(this).siblings('.treeNodeDiv').children("#technologyForm");
+
+	$(this).parent().parent().append($('#techTemplate').html());
+	var technologyForm=$(this).parent().siblings('.treeNodeDiv').children("#technologyForm");
 	technologyForm.children('#parentId').val($(this).siblings('#id').val());
 }
 function addTechnologyFirstDiv(item,elem){

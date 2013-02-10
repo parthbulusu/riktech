@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import com.mysql.jdbc.Statement;
 import com.riktech.stp.dao.TechnologyDao;
 import com.riktech.stp.dto.Technology;
 import com.riktech.stp.dto.TechnologyPk;
@@ -98,7 +99,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			// get the user-specified connection or get a connection from the ResourceManager
 			conn = isConnSupplied ? userConn : ResourceManager.getConnection();
 		
-			stmt = conn.prepareStatement( SQL_INSERT );
+			stmt = conn.prepareStatement( SQL_INSERT ,Statement.RETURN_GENERATED_KEYS);
 			int index = 1;
 			stmt.setString( index++, dto.getName() );
 			if (dto.isParentIdNull()) {
@@ -118,6 +119,17 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			}
 		
 			int rows = stmt.executeUpdate();
+		    long autoIncKeyFromApi = -1;
+
+		    rs = stmt.getGeneratedKeys();
+
+		    if (rs.next()) {
+		        autoIncKeyFromApi = rs.getLong(1);
+		    } else {
+
+		        // throw an exception from here
+		    }
+		    dto.setId(autoIncKeyFromApi);			
 			long t2 = System.currentTimeMillis();
 			if (logger.isDebugEnabled()) {
 				logger.debug( rows + " rows affected (" + (t2-t1) + " ms)");

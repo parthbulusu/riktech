@@ -23,6 +23,7 @@ function ajaxPost(url,data,successFunction,failureFunction){
 	    type: "POST",
 	    url: url,
 	    data: data,
+	    dataType: 'json',
 	    success: successFunction,
 	    failure: failureFunction
 	});

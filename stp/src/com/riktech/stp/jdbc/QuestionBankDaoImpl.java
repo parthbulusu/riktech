@@ -108,12 +108,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 
 		        // throw an exception from here
 		    }
-			
+		    dto.setId(autoIncKeyFromApi);
 			long t2 = System.currentTimeMillis();
 			if (logger.isDebugEnabled()) {
 				logger.debug( rows + " rows affected (" + (t2-t1) + " ms)");
 			}
-			dto.setId(autoIncKeyFromApi);
+			
 			reset(dto);
 			return dto.createPk();
 		}

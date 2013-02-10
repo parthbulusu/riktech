@@ -39,7 +39,7 @@
 	<div class="treeNodeDiv">
 		<form name="<%=AnswerChoicesForm.FORM_NAME%>" id="answerChoiceForm">
 			<input type="hidden" id="<%=AnswerChoicesForm.ID_FIELD_NAME%>">
-			<input type="text" placeholder="Answer Choice"  name="<%=AnswerChoicesForm.ANS_CHOICE_FIELD_NAME%>"/>
+			<input type="text" placeholder="Answer Choice" id="ansChoice"  name="<%=AnswerChoicesForm.ANS_CHOICE_FIELD_NAME%>"/>
 			<input type="hidden" id="currentQuestionId" name="<%=AnswerChoicesForm.CURRENT_QUESTION_ID_FIELD_NAME%>">
 			<textarea  style="display:none" placeholder="Existing Question" name="existingQuest" id="existingQuest"></textarea>
 			<textarea  style="display:none" placeholder="New Question"  id="newQuest" name="<%=AnswerChoicesForm.NEXT_QUESTION_FIELD_NAME%>"></textarea>

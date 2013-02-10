@@ -1,4 +1,4 @@
-.treeNodeDiv form{
+.treeNodeDiv{
 	margin-left:15px;
 	padding-bottom:10px;
 	padding-top:10px;
@@ -6,6 +6,14 @@
 	display:block;
 	clear:both;
 	background-color:#EEEEEE;
+}
+.treeNodeDiv #technologyForm{
+		border-left:5px DOTTED GREEN;
+		padding-bottom:8px;
+}
+.treeNodeDiv #answerChoiceForm{
+		border-left:5px DOTTED blue;
+		padding-bottom:8px;
 }
 #existingTech,#existingQuest{
 	width:400px;
