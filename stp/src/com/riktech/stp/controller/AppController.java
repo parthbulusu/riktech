@@ -162,8 +162,15 @@ public class AppController extends BaseController implements Servlet {
 	public void showComments(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserComments dto=UserCommentsForm.getVO(request);
 		UserCommentsDao dao=UserCommentsDaoFactory.create();
+		ArrayList<UserComments> ucList=null;
 		try {
-			ArrayList<UserComments> ucList=dao.findByDynamicWhere("USER_NAME=? AND VISIBILITY=? ORDER BY MODIFIED_DATE desc", new Object[]{dto.getUserName(),dto.getVisibility()});
+			if(dto.getVisibility()==UserComments.VISIBILITY_PRIVATE)
+			{
+				ucList=dao.findByDynamicWhere("QUESTION_ID=? AND USER_NAME=? AND VISIBILITY=? ORDER BY MODIFIED_DATE desc", new Object[]{dto.getQuestionId(),dto.getUserName(),dto.getVisibility()});
+			}else if(dto.getVisibility()==UserComments.VISIBILITY_PUBLIC){
+				ucList=dao.findByDynamicWhere("QUESTION_ID=? AND VISIBILITY=? ORDER BY MODIFIED_DATE desc", new Object[]{dto.getQuestionId(),dto.getVisibility()});
+			}
+
 			this.ajaxForward(ucList, request, response);
 		} catch (UserCommentsDaoException e) {
 			// TODO Auto-generated catch block

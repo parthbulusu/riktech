@@ -8,6 +8,7 @@ import com.riktech.stp.dto.Users;
 public class UserCommentsForm {
 	public static final String FORM_NAME="stp_ucf";
 	public static final String USER_COMMENT_FIELD_NAME=FORM_NAME+"_uc";
+	public static final String QUESTION_ID_FIELD_NAME=FORM_NAME+"_qid";
 	public static final String VISIBILITY_FIELD_NAME=FORM_NAME+"_v";
 
 	public static UserComments getVO(HttpServletRequest request){
@@ -21,6 +22,11 @@ public class UserCommentsForm {
 		}
 		Users currentUser=(Users)request.getSession().getAttribute("userProfile");
 		uc.setUserName(currentUser.getUserName());
+		try{
+			uc.setQuestionId(Long.parseLong(request.getParameter(QUESTION_ID_FIELD_NAME)));
+		}catch(NumberFormatException nfe){
+			nfe.printStackTrace();
+		}
 		uc.setUserComment(request.getParameter(USER_COMMENT_FIELD_NAME));
 		uc.setVisibility(currentVisibility);
 		return uc;

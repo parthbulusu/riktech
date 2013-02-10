@@ -37,7 +37,7 @@
 	color:black;
 	padding-left:10px;
 }
-#addComments{
+.addComments{
 	background-color:#EEEEFF;
     position: absolute; 
     height:17%;
@@ -45,13 +45,13 @@
     width: 100%; 
     bottom: 0;
 }
-#addComments textarea{
+.addComments textarea{
 	width: 500px;
 	height:100px;
 	margin:2px;
 	float: left;
 }
-#addComments input[type="button"]{
+.addComments input[type="button"]{
 	margin-right: 5px;
 	float: right;
 }

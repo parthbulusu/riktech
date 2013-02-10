@@ -27,6 +27,15 @@ public class UserComments  extends BasicDTO
 	 */
 	protected String userComment;
 	protected Timestamp modifiedDate;
+	protected long questionId;
+	public long getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(long questionId) {
+		this.questionId = questionId;
+	}
+
 	public Timestamp getModifiedDate() {
 		return modifiedDate;
 	}

@@ -23,7 +23,7 @@
 			<div id="kb-container-helper">
 				<ul>
 					<li><a href="#dig-tab">Diagram</a></li>
-					<li><a href="#blog-tab">Blog</a></li>
+					<li><a href="#blog-tab">Comments</a></li>
 					<li><a href="#notes-tab">Notes</a></li>
 				</ul>
 				<div id="dig-tab">
@@ -31,12 +31,12 @@
 				</div>
 				<div id="blog-tab">
 					<jsp:include page="./comments.jsp">
-						<jsp:param name="visibility" value="<%=UserComments.VISIBILITY_PRIVATE %>"/>
+						<jsp:param name="visibility" value="<%=UserComments.VISIBILITY_PUBLIC %>"/>
 					</jsp:include>
 				</div>
 				<div id="notes-tab">
 					<jsp:include page="./comments.jsp">		
-						<jsp:param name="visibility" value="<%=UserComments.VISIBILITY_PUBLIC %>"/>
+						<jsp:param name="visibility" value="<%=UserComments.VISIBILITY_PRIVATE %>"/>
 					</jsp:include>					
 				</div>
 

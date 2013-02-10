@@ -8,6 +8,7 @@
 			<div class="comment">
 				{{userComment}}
 			</div>	
+		
 	</li>	
  {{/each}}
 </ul>

@@ -7,6 +7,7 @@
      		<textarea name ="<%=UserCommentsForm.USER_COMMENT_FIELD_NAME%>" id="user_comment"></textarea>
      		<input type="hidden" name="<%=UserCommentsForm.VISIBILITY_FIELD_NAME%>" id="visibility" value="${param.visibility}">
      		
+     		<input type="hidden" name="<%=UserCommentsForm.QUESTION_ID_FIELD_NAME%>" id="questionId" value="${param.questionId}">
      		<input type="button" class="submitComment" value="Add">
 		</form>
     </div>

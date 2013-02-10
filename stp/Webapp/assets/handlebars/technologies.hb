@@ -4,6 +4,9 @@
 		{{#each json-result}}
 			<li>
 				{{#if question}}
+					<div style="display:none" class="currentQuestionid">
+						{{id}}
+					</div>				
 					<div class="question">
 						{{question}}
 					</div>
@@ -12,7 +15,7 @@
 							<span style="display:none" id="hilit_element">div</span>
 							<span style="display:none" id="t_id">0</span>
 							<span style="display:none" id="q_id">{{nextQuestId}}</span>
-							<a href="javascript:return false;">
+							<a>
 								{{ansChoice}}
 							</a>	
 						</div>	
@@ -22,7 +25,7 @@
 						<span style="display:none" id="hilit_element">li</span>
 						<span style="display:none" id="t_id">{{id}}</span>
 						<span style="display:none" id="q_id">{{questionId}}</span>
-						<a href="javascript:return false;">
+						<a>
 							{{name}}
 						</a>
 					</div>

@@ -34,7 +34,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * All finder methods in this class use this SELECT constant to build their queries
 	 */
-	protected final String SQL_SELECT = "SELECT USER_NAME, ID, USER_COMMENT, VISIBILITY, MODIFIED_DATE FROM " + getTableName() + "";
+	protected final String SQL_SELECT = "SELECT USER_NAME, ID, USER_COMMENT, VISIBILITY, MODIFIED_DATE,QUESTION_ID FROM " + getTableName() + "";
 
 	/** 
 	 * Finder methods will pass this value to the JDBC setMaxRows method
@@ -44,12 +44,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( USER_NAME, USER_COMMENT, VISIBILITY, MODIFIED_DATE ) VALUES ( ?, ?, ?,? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( USER_NAME, USER_COMMENT, VISIBILITY, MODIFIED_DATE,QUESTION_ID ) VALUES ( ?, ?, ?,?,? )";
 
 	/** 
 	 * SQL UPDATE statement for this table
 	 */
-	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET USER_NAME = ?, USER_COMMENT = ?, VISIBILITY = ?, MODIFIED_DATE=? WHERE ID = ?";
+	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET USER_NAME = ?, USER_COMMENT = ?, VISIBILITY = ?, MODIFIED_DATE=?,QUESTION_ID=? WHERE ID = ?";
 
 	/** 
 	 * SQL DELETE statement for this table
@@ -80,9 +80,14 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	 */
 	protected static final int COLUMN_MODIFIED_DATE = 5;
 	/** 
+	 * Index of column VISIBILITY
+	 */
+	protected static final int COLUMN_QUESTION_ID = 6;
+	
+	/** 
 	 * Number of columns
 	 */
-	protected static final int NUMBER_OF_COLUMNS = 5;
+	protected static final int NUMBER_OF_COLUMNS = 6;
 
 	/** 
 	 * Index of primary-key column ID
@@ -110,7 +115,9 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			stmt.setString( index++, dto.getUserName() );
 			stmt.setString( index++, dto.getUserComment() );
 			stmt.setInt( index++, dto.getVisibility() );
+			
 			stmt.setTimestamp(index++, new Timestamp(System.currentTimeMillis()) );
+			stmt.setLong( index++, dto.getQuestionId());
 			if (logger.isDebugEnabled()) {
 				logger.debug( "Executing " + SQL_INSERT + " with DTO: " + dto);
 			}
@@ -163,6 +170,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			stmt.setString( index++, dto.getUserComment() );
 			stmt.setInt( index++, dto.getVisibility() );
 			stmt.setTimestamp( index++, new Timestamp(System.currentTimeMillis()) );
+			stmt.setLong( index++, dto.getQuestionId());
 			stmt.setLong( index++, pk.getId() );
 			int rows = stmt.executeUpdate();
 			reset(dto);
@@ -378,6 +386,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		dto.setUserComment( rs.getString( COLUMN_USER_COMMENT ) );
 		dto.setVisibility( rs.getInt( COLUMN_VISIBILITY ) );
 		dto.setModifiedDate( rs.getTimestamp( COLUMN_MODIFIED_DATE ) );
+		dto.setQuestionId(rs.getLong( COLUMN_QUESTION_ID ));
 	}
 
 	/** 
