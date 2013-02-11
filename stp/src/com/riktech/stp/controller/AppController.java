@@ -47,7 +47,7 @@ public class AppController extends BaseController implements Servlet {
 		{
 			t_term=t_term.trim();
 			TechnologyDao dao=TechnologyDaoFactory.create();
-			ArrayList<Technology> qbList=dao.findWhereNameLike("%"+t_term+"%");
+			ArrayList<Technology> qbList=dao.findByDynamicWhere("question_id is null and name like ?", new String[]{"%"+t_term+"%"});
 			this.ajaxForward(qbList, request, response);			
 		}	
 	}
