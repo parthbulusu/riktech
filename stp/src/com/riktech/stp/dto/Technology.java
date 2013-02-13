@@ -34,6 +34,15 @@ public class Technology extends BasicDTO
 	 * This attribute represents whether the primitive attribute questionId is null.
 	 */
 	protected boolean questionIdNull = true;
+	protected boolean deletable=false;
+	public boolean isDeletable() {
+		return deletable;
+	}
+
+	public void setDeletable(boolean deletable) {
+		this.deletable = deletable;
+	}
+
 	protected String question;
 	public String getQuestion() {
 		return question;

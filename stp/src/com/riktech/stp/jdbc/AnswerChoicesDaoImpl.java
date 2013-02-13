@@ -3,8 +3,10 @@ package com.riktech.stp.jdbc;
 
 import com.riktech.stp.dao.*;
 import com.riktech.stp.factory.*;
+import com.riktech.stp.vo.AnswerChoice;
 import com.riktech.stp.dto.*;
 import com.riktech.stp.exceptions.*;
+
 import java.sql.Connection;
 import java.util.Collection;
 import org.apache.log4j.Logger;
@@ -199,45 +201,65 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		}
 		
 	}
-
+	public boolean isQuestionLeafNode(AnswerChoices choice) throws AnswerChoicesDaoException
+	{
+		ArrayList<AnswerChoices> choices=this.findByDynamicWhere("id <> ? and next_quest_id=?", new Object[]{choice.getId(),choice.getNextQuestId()});
+		if(choices.size()>0)return false;
+		return true;
+	}	
+	public boolean isACLeafNode(AnswerChoices choice) throws AnswerChoicesDaoException
+	{
+		ArrayList<AnswerChoices> choices=this.findByDynamicWhere("id <> ? and current_quest_id=?", new Object[]{choice.getId(),choice.getNextQuestId()});
+		if(choices.size()>0)return false;
+		return true;
+	}
 	/** 
 	 * Deletes a single row in the ANSWER_CHOICES table.
+	 * @throws QuestionBankDaoException 
 	 */
-	public void delete(AnswerChoicesPk pk) throws AnswerChoicesDaoException
+	public void delete(AnswerChoicesPk pk) throws AnswerChoicesDaoException, QuestionBankDaoException
 	{
-		long t1 = System.currentTimeMillis();
-		// declare variables
-		final boolean isConnSupplied = (userConn != null);
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		
-		try {
-			// get the user-specified connection or get a connection from the ResourceManager
-			conn = isConnSupplied ? userConn : ResourceManager.getConnection();
-		
-			if (logger.isDebugEnabled()) {
-				logger.debug( "Executing " + SQL_DELETE + " with PK: " + pk);
+		AnswerChoices choice=this.findByPrimaryKey(pk);
+		if(isACLeafNode(choice))
+		{
+			long t1 = System.currentTimeMillis();
+			// declare variables
+			final boolean isConnSupplied = (userConn != null);
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			
+			try {
+				// get the user-specified connection or get a connection from the ResourceManager
+				conn = isConnSupplied ? userConn : ResourceManager.getConnection();
+			
+				if (logger.isDebugEnabled()) {
+					logger.debug( "Executing " + SQL_DELETE + " with PK: " + pk);
+				}
+			
+				stmt = conn.prepareStatement( SQL_DELETE );
+				stmt.setLong( 1, pk.getId() );
+				int rows = stmt.executeUpdate();
+				long t2 = System.currentTimeMillis();
+				if (logger.isDebugEnabled()) {
+					logger.debug( rows + " rows affected (" + (t2-t1) + " ms)");
+				}
+			
 			}
-		
-			stmt = conn.prepareStatement( SQL_DELETE );
-			stmt.setLong( 1, pk.getId() );
-			int rows = stmt.executeUpdate();
-			long t2 = System.currentTimeMillis();
-			if (logger.isDebugEnabled()) {
-				logger.debug( rows + " rows affected (" + (t2-t1) + " ms)");
+			catch (Exception _e) {
+				logger.error( "Exception: " + _e.getMessage(), _e );
+				throw new AnswerChoicesDaoException( "Exception: " + _e.getMessage(), _e );
 			}
-		
-		}
-		catch (Exception _e) {
-			logger.error( "Exception: " + _e.getMessage(), _e );
-			throw new AnswerChoicesDaoException( "Exception: " + _e.getMessage(), _e );
-		}
-		finally {
-			ResourceManager.close(stmt);
-			if (!isConnSupplied) {
-				ResourceManager.close(conn);
+			finally {
+				ResourceManager.close(stmt);
+				if (!isConnSupplied) {
+					ResourceManager.close(conn);
+				}
+			
 			}
-		
+			if(isQuestionLeafNode(choice)){
+				QuestionBankDao dao=QuestionBankDaoFactory.create();
+				dao.delete(new QuestionBankPk(choice.getNextQuestId()));
+			}
 		}
 		
 	}
@@ -290,13 +312,19 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	{
 		return findByDynamicSelect( SQL_SELECT + " WHERE ID = ? ORDER BY ID", new Object[] {  new Long(id) } );
 	}
-
 	/** 
 	 * Returns all rows from the ANSWER_CHOICES table that match the criteria 'CURRENT_QUEST_ID = :currentQuestId'.
 	 */
 	public ArrayList<AnswerChoices> findWhereCurrentQuestIdEquals(long currentQuestId) throws AnswerChoicesDaoException
 	{
-		return findByDynamicSelect( SQL_SELECT + " WHERE CURRENT_QUEST_ID = ? ORDER BY CURRENT_QUEST_ID", new Object[] {  new Long(currentQuestId) } );
+		return findWhereCurrentQuestIdEquals(currentQuestId,false);
+	}
+	/** 
+	 * Returns all rows from the ANSWER_CHOICES table that match the criteria 'CURRENT_QUEST_ID = :currentQuestId'.
+	 */
+	public ArrayList<AnswerChoices> findWhereCurrentQuestIdEquals(long currentQuestId,boolean isDeletePermission) throws AnswerChoicesDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE CURRENT_QUEST_ID = ? ORDER BY CURRENT_QUEST_ID", new Object[] {  new Long(currentQuestId) },isDeletePermission );
 	}
 
 	/** 
@@ -361,12 +389,13 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 
 	/** 
 	 * Fetches a single row from the result set
+	 * @throws AnswerChoicesDaoException 
 	 */
-	protected AnswerChoices fetchSingleResult(ResultSet rs) throws SQLException
+	protected AnswerChoices fetchSingleResult(ResultSet rs,boolean isDeletePermission) throws SQLException, AnswerChoicesDaoException
 	{
 		if (rs.next()) {
 			AnswerChoices dto = new AnswerChoices();
-			populateDto( dto, rs);
+			populateDto( dto, rs,isDeletePermission);
 			return dto;
 		} else {
 			return null;
@@ -376,13 +405,14 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 
 	/** 
 	 * Fetches multiple rows from the result set
+	 * @throws AnswerChoicesDaoException 
 	 */
-	protected ArrayList<AnswerChoices> fetchMultiResults(ResultSet rs) throws SQLException
+	protected ArrayList<AnswerChoices> fetchMultiResults(ResultSet rs,boolean isDeletePermission) throws SQLException, AnswerChoicesDaoException
 	{
 		ArrayList<AnswerChoices> resultList = new ArrayList<AnswerChoices>();
 		while (rs.next()) {
 			AnswerChoices dto = new AnswerChoices();
-			populateDto( dto, rs);
+			populateDto( dto, rs,isDeletePermission);
 			resultList.add( dto );
 		}
 		
@@ -391,8 +421,9 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 
 	/** 
 	 * Populates a DTO with data from a ResultSet
+	 * @throws AnswerChoicesDaoException 
 	 */
-	protected void populateDto(AnswerChoices dto, ResultSet rs) throws SQLException
+	protected void populateDto(AnswerChoices dto, ResultSet rs,boolean isDeletePermission) throws SQLException, AnswerChoicesDaoException
 	{
 		dto.setId( rs.getLong( COLUMN_ID ) );
 		dto.setCurrentQuestId( rs.getLong( COLUMN_CURRENT_QUEST_ID ) );
@@ -405,6 +436,10 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		if (rs.wasNull()) {
 			dto.setNextQuestIdNull( true );
 		}
+		if(isDeletePermission)
+		{
+			dto.setDeletable(this.isACLeafNode(dto));
+		}
 		
 	}
 
@@ -414,11 +449,17 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	protected void reset(AnswerChoices dto)
 	{
 	}
-
 	/** 
 	 * Returns all rows from the ANSWER_CHOICES table that match the specified arbitrary SQL statement
 	 */
 	public ArrayList<AnswerChoices> findByDynamicSelect(String sql, Object[] sqlParams) throws AnswerChoicesDaoException
+	{
+		return findByDynamicSelect(sql,sqlParams,false);
+	}
+	/** 
+	 * Returns all rows from the ANSWER_CHOICES table that match the specified arbitrary SQL statement
+	 */
+	public ArrayList<AnswerChoices> findByDynamicSelect(String sql, Object[] sqlParams,boolean isDeletePermission) throws AnswerChoicesDaoException
 	{
 		// declare variables
 		final boolean isConnSupplied = (userConn != null);
@@ -451,7 +492,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			rs = stmt.executeQuery();
 		
 			// fetch the results
-			return fetchMultiResults(rs);
+			return fetchMultiResults(rs,isDeletePermission);
 		}
 		catch (Exception _e) {
 			logger.error( "Exception: " + _e.getMessage(), _e );
@@ -467,11 +508,17 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		}
 		
 	}
-
 	/** 
 	 * Returns all rows from the ANSWER_CHOICES table that match the specified arbitrary SQL statement
 	 */
 	public ArrayList<AnswerChoices> findByDynamicWhere(String sql, Object[] sqlParams) throws AnswerChoicesDaoException
+	{
+		return findByDynamicWhere(sql,sqlParams,false);
+	}
+	/** 
+	 * Returns all rows from the ANSWER_CHOICES table that match the specified arbitrary SQL statement
+	 */
+	public ArrayList<AnswerChoices> findByDynamicWhere(String sql, Object[] sqlParams,boolean isDeletePermission) throws AnswerChoicesDaoException
 	{
 		// declare variables
 		final boolean isConnSupplied = (userConn != null);
@@ -504,7 +551,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			rs = stmt.executeQuery();
 		
 			// fetch the results
-			return fetchMultiResults(rs);
+			return fetchMultiResults(rs,isDeletePermission);
 		}
 		catch (Exception _e) {
 			logger.error( "Exception: " + _e.getMessage(), _e );

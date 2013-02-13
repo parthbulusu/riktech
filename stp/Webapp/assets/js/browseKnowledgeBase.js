@@ -4,8 +4,9 @@ $(document).ready(function() {
 	$(".submitComment").bind("click",saveComments);
 	//$("#kb-container-helper").delegate("a[href='#notes-tab']","click",scrollOnCommnetTabClick);
 	//$("#kb-container-helper").delegate("a[href='#blog-tab']","click",scrollOnCommnetTabClick);
-	ajaxPost("/stp/action?action=BrowseKnowledgeBase&ts_id="+isScenarioBased,'',showTile,error);
-	$("#kb-container #kb-tiles").delegate(".kb-tile ul li div a","click",getNextQBRecord);	
+	ajaxPost("/stp/nextQuestion?ts_id="+isScenarioBased,'',showTile,error);
+	$("#kb-container #kb-tiles").delegate(".kb-tile ul li div a","click",getNextQBRecord);
+	$("#kb-container #kb-tiles").delegate(".kb-tile ul li div img.deleteIcon","click",deleteRecord);	
 	$("#kb-container #kb-tiles").delegate(".kb-tile","click",showHelpTabs);
 	  //toggle the component with class msg_body
 	  jQuery("a#expandPanelDev").click(function()
@@ -14,6 +15,29 @@ $(document).ready(function() {
 	  });	
 	
 });
+function deleteRecord()
+{
+	var t_id=$(this).siblings('#t_id').html();
+	var ac_id=$(this).siblings('#ac_id').html();
+	var data={};
+	if(t_id && t_id>0){
+		data['t_id']=t_id;
+		ajaxPost("/stp/deleteTechnology",data,repaint(data,$(this)),error);
+	}if(ac_id && ac_id>0){
+		data['ac_id']=ac_id;
+		ajaxPost("/stp/deleteAnswerChoice",data,repaint(data,$(this)),error);
+	}
+	
+}
+
+var repaint= function (input,eventOriginator){
+	var kb_tile=eventOriginator.parents('.kb-tile');
+	var kb_tile_id=kb_tile.attr("id");
+	return setTimeout(function(output){
+		kb_tile.next().find('#'+kb_tile_id).click();
+	},500);
+
+}
 function scrollOnCommnetTabClick()
 {
 	                    
@@ -97,7 +121,7 @@ function showHelperImage(qid)
 	
      $('#mainImage').hide();
      $('#kb-container-helper').css('background-image', "url('../assets/images/ajax-loader.gif')");
-     $('#mainImage').attr('src', '/stp/action?action=ShowQuestionImage&q_id='+qid);
+     $('#mainImage').attr('src', '/stp/showImage?q_id='+qid);
      $('#kb-container-helper').css('background-image', 'none');
      $('#mainImage').fadeIn();
 }
@@ -118,11 +142,10 @@ function getNextQBRecord()
 		}
 	});
 	var data={
-		"action":"BrowseKnowledgeBase",
 		"t_id":$(this).siblings('#t_id').html(),
-		"q_id":$(this).siblings('#q_id').html(),
+		"q_id":$(this).siblings('#q_id').html()
 	}
-	ajaxPost("/stp/action",data,showTileDetails(data),error);
+	ajaxPost("/stp/nextQuestion",data,showTileDetails(data,$(this)),error);
 }
 function showTile(data){
 	var source = $("#hb-technologies").html(); 
@@ -131,8 +154,9 @@ function showTile(data){
 	$("#kb-tiles").prepend(template(data));
 	$(".kb-tile").show('slow');
 }
-var showTileDetails = function(input) {
+var showTileDetails = function(input,eventOriginator) {
 	   return function(data) {
+		   eventOriginator.attr("id",data.uid);
 			$(".kb-tile").each(function(){$(this).removeClass("selected");});
 			showTile(data);
 			applyScroll();

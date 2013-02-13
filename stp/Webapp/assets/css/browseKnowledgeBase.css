@@ -97,6 +97,9 @@
 #kb-container #kb-tiles .kb-tile ul{
 	list-style: square;
 }
+#kb-container #kb-tiles .kb-tile ul li{
+	margin-bottom:5px;
+}
 
 #kb-container #kb-tiles .kb-tile ul li a:hover {
 	background-color: #eeeeee;    
@@ -105,8 +108,21 @@
 #kb-container #kb-tiles .kb-tile ul li.selected{
  	background-color: #E6EFC2;
 }
+#kb-container #kb-tiles .kb-tile ul li div{
+	margin-bottom:5px;
+}
 #kb-container #kb-tiles .kb-tile ul li div.selected{
  	background-color: #E6EFC2;
+}
+.deleteIcon{
+	width:15px;
+	height:15px;
+	float:right;
+	cursot:hand;
+}
+.deleteIcon:hover{
+	width:20px;
+	height:20px;
 }
 .scroll-pane,
 .scroll-pane-arrows

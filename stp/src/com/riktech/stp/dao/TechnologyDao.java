@@ -20,8 +20,10 @@ public interface TechnologyDao
 
 	/** 
 	 * Deletes a single row in the TECHNOLOGY table.
+	 * @throws QuestionBankDaoException 
+	 * @throws AnswerChoicesDaoException 
 	 */
-	public void delete(TechnologyPk pk) throws TechnologyDaoException;
+	public void delete(TechnologyPk pk) throws TechnologyDaoException, QuestionBankDaoException, AnswerChoicesDaoException;
 
 	/** 
 	 * Returns the rows from the TECHNOLOGY table that matches the specified primary-key value.
@@ -51,6 +53,10 @@ public interface TechnologyDao
 	 * Returns all rows from the TECHNOLOGY table that match the criteria 'NAME like :name'.
 	 */
 	public ArrayList<Technology> findWhereNameLike(String name) throws TechnologyDaoException;
+	/** 
+	 * Returns all rows from the TECHNOLOGY table that match the criteria 'PARENT_ID = :parentId'.
+	 */
+	public ArrayList<Technology> findWhereParentIdEquals(long parentId,boolean isDeletePermission) throws TechnologyDaoException;
 
 	/** 
 	 * Returns all rows from the TECHNOLOGY table that match the criteria 'PARENT_ID = :parentId'.
@@ -74,7 +80,17 @@ public interface TechnologyDao
 	 * Gets the value of maxRows
 	 */
 	public int getMaxRows();
+	
+	/** 
+	 * Returns all rows from the TECHNOLOGY table that match the specified arbitrary SQL statement
+	 */
+	public ArrayList<Technology> findByDynamicSelect(String sql, Object[] sqlParams,boolean isDeletePermission) throws TechnologyDaoException;
 
+	/** 
+	 * Returns all rows from the TECHNOLOGY table that match the specified arbitrary SQL statement
+	 */
+	public ArrayList<Technology> findByDynamicWhere(String sql, Object[] sqlParams,boolean isDeletePermission) throws TechnologyDaoException;
+	
 	/** 
 	 * Returns all rows from the TECHNOLOGY table that match the specified arbitrary SQL statement
 	 */

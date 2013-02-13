@@ -33,6 +33,15 @@ public class AnswerChoices extends BasicDTO
 	 * This attribute represents whether the primitive attribute nextQuestId is null.
 	 */
 	protected boolean nextQuestIdNull = true;
+	
+	protected boolean deletable=false;
+	public boolean isDeletable() {
+		return deletable;
+	}
+
+	public void setDeletable(boolean deletable) {
+		this.deletable = deletable;
+	}
 
 	protected String nextQuestion;
 	public String getNextQuestion() {

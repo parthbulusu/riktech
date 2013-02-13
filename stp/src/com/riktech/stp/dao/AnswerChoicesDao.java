@@ -20,8 +20,9 @@ public interface AnswerChoicesDao
 
 	/** 
 	 * Deletes a single row in the ANSWER_CHOICES table.
+	 * @throws QuestionBankDaoException 
 	 */
-	public void delete(AnswerChoicesPk pk) throws AnswerChoicesDaoException;
+	public void delete(AnswerChoicesPk pk) throws AnswerChoicesDaoException, QuestionBankDaoException;
 
 	/** 
 	 * Returns the rows from the ANSWER_CHOICES table that matches the specified primary-key value.
@@ -56,6 +57,10 @@ public interface AnswerChoicesDao
 	/** 
 	 * Returns all rows from the ANSWER_CHOICES table that match the criteria 'CURRENT_QUEST_ID = :currentQuestId'.
 	 */
+	public ArrayList<AnswerChoices> findWhereCurrentQuestIdEquals(long currentQuestId,boolean isDeletePermission) throws AnswerChoicesDaoException;
+	/** 
+	 * Returns all rows from the ANSWER_CHOICES table that match the criteria 'CURRENT_QUEST_ID = :currentQuestId'.
+	 */
 	public ArrayList<AnswerChoices> findWhereCurrentQuestIdEquals(long currentQuestId) throws AnswerChoicesDaoException;
 
 	/** 
@@ -77,6 +82,15 @@ public interface AnswerChoicesDao
 	 * Gets the value of maxRows
 	 */
 	public int getMaxRows();
+	/** 
+	 * Returns all rows from the ANSWER_CHOICES table that match the specified arbitrary SQL statement
+	 */
+	public ArrayList<AnswerChoices> findByDynamicSelect(String sql, Object[] sqlParams,boolean isDeletePermission) throws AnswerChoicesDaoException;
+
+	/** 
+	 * Returns all rows from the ANSWER_CHOICES table that match the specified arbitrary SQL statement
+	 */
+	public ArrayList<AnswerChoices> findByDynamicWhere(String sql, Object[] sqlParams,boolean isDeletePermission) throws AnswerChoicesDaoException;
 
 	/** 
 	 * Returns all rows from the ANSWER_CHOICES table that match the specified arbitrary SQL statement

@@ -1,5 +1,6 @@
 package com.riktech.stp.controller;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
@@ -167,7 +168,16 @@ public class BaseController extends HttpServlet {
 		return false;
 
 	}
-	
+   protected static void close(Closeable resource) {
+        if (resource != null) {
+            try {
+                resource.close();
+            } catch (IOException e) {
+                // Do your thing with the exception. Print it, log it or mail it.
+                e.printStackTrace();
+            }
+        }
+    }	
 	public void ajaxForward(BasicDTO dto, HttpServletRequest request, HttpServletResponse response)
 	{
 		ArrayList<BasicDTO> list=new ArrayList<BasicDTO>();

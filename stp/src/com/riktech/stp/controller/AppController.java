@@ -18,6 +18,7 @@ import com.riktech.stp.dao.QuestionBankDao;
 import com.riktech.stp.dao.TechnologyDao;
 import com.riktech.stp.dao.UserCommentsDao;
 import com.riktech.stp.dto.AnswerChoices;
+import com.riktech.stp.dto.AnswerChoicesPk;
 import com.riktech.stp.dto.QuestionBank;
 import com.riktech.stp.dto.QuestionBankPk;
 import com.riktech.stp.dto.Technology;
@@ -38,6 +39,10 @@ import com.riktech.stp.jdbc.UserCommentsDaoImpl;
  */
 public class AppController extends BaseController implements Servlet {
 	private static final long serialVersionUID = 1L;
+	QuestionBankDao qdao=QuestionBankDaoFactory.create();
+	TechnologyDao tdao=TechnologyDaoFactory.create();
+	UserCommentsDao udao=UserCommentsDaoFactory.create();
+	AnswerChoicesDao adao=AnswerChoicesDaoFactory.create();
 	public void home(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		dispatch(request,response,"/browse/browseKnowledgeBase.jsp");
 	}
@@ -46,8 +51,8 @@ public class AppController extends BaseController implements Servlet {
 		if(StringUtils.isNotEmpty(t_term))
 		{
 			t_term=t_term.trim();
-			TechnologyDao dao=TechnologyDaoFactory.create();
-			ArrayList<Technology> qbList=dao.findByDynamicWhere("question_id is null and name like ?", new String[]{"%"+t_term+"%"});
+			
+			ArrayList<Technology> qbList=tdao.findByDynamicWhere("question_id is null and name like ?", new String[]{"%"+t_term+"%"});
 			this.ajaxForward(qbList, request, response);			
 		}	
 	}
@@ -56,8 +61,8 @@ public class AppController extends BaseController implements Servlet {
 		if(StringUtils.isNotEmpty(q_term))
 		{
 			q_term=q_term.trim();
-			QuestionBankDao dao=QuestionBankDaoFactory.create();
-			ArrayList<QuestionBank> qbList=dao.findWhereQuestionLike("%"+q_term+"%");
+			
+			ArrayList<QuestionBank> qbList=qdao.findWhereQuestionLike("%"+q_term+"%");
 			this.ajaxForward(qbList, request, response);
 		}
 		
@@ -67,9 +72,9 @@ public class AppController extends BaseController implements Servlet {
 	}
 	public void addComment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserComments dto=UserCommentsForm.getVO(request);
-		UserCommentsDao dao=UserCommentsDaoFactory.create();
+
 		try {
-			dao.insert(dto);
+			udao.insert(dto);
 			showComments(request,response);
 		} catch (UserCommentsDaoException e) {
 			// TODO Auto-generated catch block
@@ -123,7 +128,7 @@ public class AppController extends BaseController implements Servlet {
 		AnswerChoices ac=AnswerChoicesForm.getVO(request);
 		boolean insertac=true;
 		boolean newquestion=false;
-		QuestionBankDao qdao=QuestionBankDaoFactory.create();
+		
 		QuestionBankPk questPk=null;
 		if(ac.getNextQuestId()<1)
 		{
@@ -159,16 +164,35 @@ public class AppController extends BaseController implements Servlet {
 		this.ajaxForward(ac, request, response);
 		
 	}
+	
+	public void deleteTechnology(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String t_id=request.getParameter("t_id");
+		try{
+			long l_t_id=Long.parseLong(t_id);
+			tdao.delete(new TechnologyPk(l_t_id));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}	
+	public void deleteAnswerChoice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String ac_id=request.getParameter("ac_id");
+		try{
+			long l_ac_id=Long.parseLong(ac_id);
+			adao.delete(new AnswerChoicesPk(l_ac_id));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	public void showComments(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserComments dto=UserCommentsForm.getVO(request);
-		UserCommentsDao dao=UserCommentsDaoFactory.create();
+		
 		ArrayList<UserComments> ucList=null;
 		try {
 			if(dto.getVisibility()==UserComments.VISIBILITY_PRIVATE)
 			{
-				ucList=dao.findByDynamicWhere("QUESTION_ID=? AND USER_NAME=? AND VISIBILITY=? ORDER BY MODIFIED_DATE desc", new Object[]{dto.getQuestionId(),dto.getUserName(),dto.getVisibility()});
+				ucList=udao.findByDynamicWhere("QUESTION_ID=? AND USER_NAME=? AND VISIBILITY=? ORDER BY MODIFIED_DATE desc", new Object[]{dto.getQuestionId(),dto.getUserName(),dto.getVisibility()});
 			}else if(dto.getVisibility()==UserComments.VISIBILITY_PUBLIC){
-				ucList=dao.findByDynamicWhere("QUESTION_ID=? AND VISIBILITY=? ORDER BY MODIFIED_DATE desc", new Object[]{dto.getQuestionId(),dto.getVisibility()});
+				ucList=udao.findByDynamicWhere("QUESTION_ID=? AND VISIBILITY=? ORDER BY MODIFIED_DATE desc", new Object[]{dto.getQuestionId(),dto.getVisibility()});
 			}
 
 			this.ajaxForward(ucList, request, response);

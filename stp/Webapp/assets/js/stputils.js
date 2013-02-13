@@ -18,6 +18,7 @@ function error()
 {
 	alert("error");
 }
+
 function ajaxPost(url,data,successFunction,failureFunction){
 	$.ajax({
 	    type: "POST",

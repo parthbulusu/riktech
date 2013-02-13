@@ -11,10 +11,19 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import com.mysql.jdbc.Statement;
+import com.riktech.stp.dao.AnswerChoicesDao;
+import com.riktech.stp.dao.QuestionBankDao;
 import com.riktech.stp.dao.TechnologyDao;
+import com.riktech.stp.dto.AnswerChoices;
+import com.riktech.stp.dto.QuestionBankPk;
 import com.riktech.stp.dto.Technology;
 import com.riktech.stp.dto.TechnologyPk;
+import com.riktech.stp.exceptions.AnswerChoicesDaoException;
+import com.riktech.stp.exceptions.QuestionBankDaoException;
 import com.riktech.stp.exceptions.TechnologyDaoException;
+import com.riktech.stp.factory.AnswerChoicesDaoFactory;
+import com.riktech.stp.factory.QuestionBankDaoFactory;
+import com.riktech.stp.factory.TechnologyDaoFactory;
 
 public class TechnologyDaoImpl extends AbstractDAO implements TechnologyDao
 {
@@ -211,44 +220,54 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 
 	/** 
 	 * Deletes a single row in the TECHNOLOGY table.
+	 * @throws QuestionBankDaoException 
+	 * @throws AnswerChoicesDaoException 
 	 */
-	public void delete(TechnologyPk pk) throws TechnologyDaoException
+	public void delete(TechnologyPk pk) throws TechnologyDaoException, QuestionBankDaoException, AnswerChoicesDaoException
 	{
-		long t1 = System.currentTimeMillis();
-		// declare variables
-		final boolean isConnSupplied = (userConn != null);
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		
-		try {
-			// get the user-specified connection or get a connection from the ResourceManager
-			conn = isConnSupplied ? userConn : ResourceManager.getConnection();
-		
-			if (logger.isDebugEnabled()) {
-				logger.debug( "Executing " + SQL_DELETE + " with PK: " + pk);
+		Technology tech=this.findByPrimaryKey(pk);
+		if(isTLeafNode(tech))
+		{		
+			long t1 = System.currentTimeMillis();
+			// declare variables
+			final boolean isConnSupplied = (userConn != null);
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			
+			try {
+				// get the user-specified connection or get a connection from the ResourceManager
+				conn = isConnSupplied ? userConn : ResourceManager.getConnection();
+			
+				if (logger.isDebugEnabled()) {
+					logger.debug( "Executing " + SQL_DELETE + " with PK: " + pk);
+				}
+			
+				stmt = conn.prepareStatement( SQL_DELETE );
+				stmt.setLong( 1, pk.getId() );
+				int rows = stmt.executeUpdate();
+				long t2 = System.currentTimeMillis();
+				if (logger.isDebugEnabled()) {
+					logger.debug( rows + " rows affected (" + (t2-t1) + " ms)");
+				}
+			
+			}
+			catch (Exception _e) {
+				logger.error( "Exception: " + _e.getMessage(), _e );
+				throw new TechnologyDaoException( "Exception: " + _e.getMessage(), _e );
+			}
+			finally {
+				ResourceManager.close(stmt);
+				if (!isConnSupplied) {
+					ResourceManager.close(conn);
+				}
+			
 			}
 		
-			stmt = conn.prepareStatement( SQL_DELETE );
-			stmt.setLong( 1, pk.getId() );
-			int rows = stmt.executeUpdate();
-			long t2 = System.currentTimeMillis();
-			if (logger.isDebugEnabled()) {
-				logger.debug( rows + " rows affected (" + (t2-t1) + " ms)");
+			if(isQuestionLeafNode(tech)){
+				QuestionBankDao dao=QuestionBankDaoFactory.create();
+				dao.delete(new QuestionBankPk(tech.getQuestionId()));
 			}
-		
 		}
-		catch (Exception _e) {
-			logger.error( "Exception: " + _e.getMessage(), _e );
-			throw new TechnologyDaoException( "Exception: " + _e.getMessage(), _e );
-		}
-		finally {
-			ResourceManager.close(stmt);
-			if (!isConnSupplied) {
-				ResourceManager.close(conn);
-			}
-		
-		}
-		
 	}
 
 	/** 
@@ -298,13 +317,19 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	{
 		return findByDynamicSelect( SQL_SELECT + " WHERE NAME LIKE ? ORDER BY NAME", new Object[] { name } );
 	}
-
 	/** 
 	 * Returns all rows from the TECHNOLOGY table that match the criteria 'PARENT_ID = :parentId'.
 	 */
 	public ArrayList<Technology> findWhereParentIdEquals(long parentId) throws TechnologyDaoException
 	{
-		return findByDynamicSelect( SQL_SELECT + " WHERE PARENT_ID = ? ORDER BY PARENT_ID", new Object[] {  new Long(parentId) } );
+		return findWhereParentIdEquals(parentId,false);
+	}
+	/** 
+	 * Returns all rows from the TECHNOLOGY table that match the criteria 'PARENT_ID = :parentId'.
+	 */
+	public ArrayList<Technology> findWhereParentIdEquals(long parentId,boolean isDeletePermission) throws TechnologyDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE PARENT_ID = ? ORDER BY PARENT_ID", new Object[] {  new Long(parentId) } ,isDeletePermission);
 	}
 
 	/** 
@@ -361,12 +386,14 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 
 	/** 
 	 * Fetches a single row from the result set
+	 * @throws AnswerChoicesDaoException 
+	 * @throws TechnologyDaoException 
 	 */
-	protected Technology fetchSingleResult(ResultSet rs) throws SQLException
+	protected Technology fetchSingleResult(ResultSet rs,boolean isDeletePermission) throws SQLException, AnswerChoicesDaoException, TechnologyDaoException
 	{
 		if (rs.next()) {
 			Technology dto = new Technology();
-			populateDto( dto, rs);
+			populateDto( dto, rs, isDeletePermission);
 			return dto;
 		} else {
 			return null;
@@ -376,13 +403,15 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 
 	/** 
 	 * Fetches multiple rows from the result set
+	 * @throws AnswerChoicesDaoException 
+	 * @throws TechnologyDaoException 
 	 */
-	protected ArrayList<Technology> fetchMultiResults(ResultSet rs) throws SQLException
+	protected ArrayList<Technology> fetchMultiResults(ResultSet rs,boolean isDeletePermission) throws SQLException, AnswerChoicesDaoException, TechnologyDaoException
 	{
 		ArrayList<Technology> resultList = new ArrayList<Technology>();
 		while (rs.next()) {
 			Technology dto = new Technology();
-			populateDto( dto, rs);
+			populateDto( dto, rs, isDeletePermission);
 			resultList.add( dto );
 		}
 
@@ -391,8 +420,10 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 
 	/** 
 	 * Populates a DTO with data from a ResultSet
+	 * @throws AnswerChoicesDaoException 
+	 * @throws TechnologyDaoException 
 	 */
-	protected void populateDto(Technology dto, ResultSet rs) throws SQLException
+	protected void populateDto(Technology dto, ResultSet rs,boolean isDeletePermission) throws SQLException, AnswerChoicesDaoException, TechnologyDaoException
 	{
 		dto.setId( rs.getLong( COLUMN_ID ) );
 		dto.setName( rs.getString( COLUMN_NAME ) );
@@ -405,20 +436,45 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		if (rs.wasNull()) {
 			dto.setQuestionIdNull( true );
 		}
-		
+		if(isDeletePermission)
+		{
+			dto.setDeletable(this.isTLeafNode(dto));
+		}	
 	}
-
+	public boolean isQuestionLeafNode(Technology t) throws AnswerChoicesDaoException
+	{
+		AnswerChoicesDao dao=AnswerChoicesDaoFactory.create();
+		ArrayList<AnswerChoices> list=dao.findWhereNextQuestIdEquals(t.getQuestionId());		
+		if(list!=null & list.size()>0)return false;
+		return true;
+	}	
+	public boolean isTLeafNode(Technology t) throws AnswerChoicesDaoException, TechnologyDaoException
+	{
+		ArrayList<Technology> tList=this.findWhereParentIdEquals(t.getId());
+		if(tList!=null & tList.size()>0)return false;
+		AnswerChoicesDao dao=AnswerChoicesDaoFactory.create();
+		ArrayList<AnswerChoices> alist=dao.findWhereCurrentQuestIdEquals(t.getQuestionId());
+		if(alist!=null & alist.size()>0)return false;
+		return true;
+	}
 	/** 
 	 * Resets the modified attributes in the DTO
 	 */
 	protected void reset(Technology dto)
 	{
 	}
-
 	/** 
 	 * Returns all rows from the TECHNOLOGY table that match the specified arbitrary SQL statement
 	 */
 	public ArrayList<Technology> findByDynamicSelect(String sql, Object[] sqlParams) throws TechnologyDaoException
+	{
+		return findByDynamicSelect(sql,sqlParams,false);
+	}
+
+	/** 
+	 * Returns all rows from the TECHNOLOGY table that match the specified arbitrary SQL statement
+	 */
+	public ArrayList<Technology> findByDynamicSelect(String sql, Object[] sqlParams,boolean isDeletePermission) throws TechnologyDaoException
 	{
 		// declare variables
 		final boolean isConnSupplied = (userConn != null);
@@ -451,7 +507,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			rs = stmt.executeQuery();
 		
 			// fetch the results
-			return fetchMultiResults(rs);
+			return fetchMultiResults(rs, isDeletePermission);
 		}
 		catch (Exception _e) {
 			logger.error( "Exception: " + _e.getMessage(), _e );
@@ -467,11 +523,17 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		}
 		
 	}
-
 	/** 
 	 * Returns all rows from the TECHNOLOGY table that match the specified arbitrary SQL statement
 	 */
 	public ArrayList<Technology> findByDynamicWhere(String sql, Object[] sqlParams) throws TechnologyDaoException
+	{
+		return findByDynamicWhere(sql,sqlParams,false);
+	}
+	/** 
+	 * Returns all rows from the TECHNOLOGY table that match the specified arbitrary SQL statement
+	 */
+	public ArrayList<Technology> findByDynamicWhere(String sql, Object[] sqlParams,boolean isDeletePermission) throws TechnologyDaoException
 	{
 		// declare variables
 		final boolean isConnSupplied = (userConn != null);
@@ -504,7 +566,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			rs = stmt.executeQuery();
 		
 			// fetch the results
-			return fetchMultiResults(rs);
+			return fetchMultiResults(rs,isDeletePermission);
 		}
 		catch (Exception _e) {
 			_e.printStackTrace();

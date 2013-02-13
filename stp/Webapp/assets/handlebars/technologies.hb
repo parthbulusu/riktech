@@ -13,21 +13,32 @@
 					{{#each answerChoices}}
 						<div class="answer">
 							<span style="display:none" id="hilit_element">div</span>
-							<span style="display:none" id="t_id">0</span>
+							<span style="display:none" id="ac_id">{{id}}</span>
 							<span style="display:none" id="q_id">{{nextQuestId}}</span>
 							<a>
-								{{ansChoice}}
+								{{ansChoice}} 
 							</a>	
+							
+							{{#if deletable}}
+								<img src="assets/images/delete.jpg" class="deleteIcon"  />
+							{{/if}}
+														
 						</div>	
 					{{/each}}	
 				{{else}}
+					<div style="display:none" class="parentTechnologyid">
+						{{parentId}}
+					</div>	
 					<div class="technology">
 						<span style="display:none" id="hilit_element">li</span>
 						<span style="display:none" id="t_id">{{id}}</span>
 						<span style="display:none" id="q_id">{{questionId}}</span>
 						<a>
-							{{name}}
+							{{name}} 
 						</a>
+						{{#if deletable}}
+							<img src="assets/images/delete.jpg" class="deleteIcon" />
+						{{/if}}
 					</div>
 				 {{/if}}
 			</li>	

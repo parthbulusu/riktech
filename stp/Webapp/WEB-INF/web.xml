@@ -20,12 +20,22 @@
   	<servlet-name>AppController</servlet-name>
   	<servlet-class>com.riktech.stp.controller.AppController</servlet-class>
   </servlet>  
- 
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>BrowseController</display-name>
+  	<servlet-name>BrowseController</servlet-name>
+  	<servlet-class>com.riktech.stp.controller.BrowseController</servlet-class>
+  </servlet> 
   <servlet-mapping>
     <servlet-name>Action</servlet-name>
     <url-pattern>/action</url-pattern>
   </servlet-mapping>
-
+  <servlet-mapping>
+  	<servlet-name>BrowseController</servlet-name>
+  	<url-pattern>/showImage</url-pattern>
+  	<url-pattern>/nextQuestion</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
   	<servlet-name>AppController</servlet-name>
   	<url-pattern>/logout</url-pattern>
@@ -37,6 +47,8 @@
   	<url-pattern>/searchTechnology</url-pattern>
   	<url-pattern>/saveAnswerChoice</url-pattern>
   	<url-pattern>/saveTechnology</url-pattern>
+	<url-pattern>/deleteTechnology</url-pattern>
+	<url-pattern>/deleteAnswerChoice</url-pattern>  	
   </servlet-mapping>
   	<resource-ref>
       	<description>DB Connection</description>
@@ -51,6 +63,8 @@
             <url-pattern>/home</url-pattern> 
             <url-pattern>/browse/*</url-pattern> 
             <url-pattern>/find/*</url-pattern> 
+		  	<url-pattern>/showImage</url-pattern>
+		  	<url-pattern>/nextQuestion</url-pattern>            
         </web-resource-collection> 
         <auth-constraint> 
         	<role-name>stp-admin</role-name> 
@@ -65,6 +79,8 @@
             <url-pattern>/searchTechnology/*</url-pattern> 
             <url-pattern>/saveAnswerChoice/*</url-pattern>
             <url-pattern>/saveTechnology/*</url-pattern>
+            <url-pattern>/deleteTechnology/*</url-pattern>
+ 			<url-pattern>/deleteAnswerChoice/*</url-pattern>
         </web-resource-collection> 
         <auth-constraint> 
             <role-name>stp-admin</role-name> 
