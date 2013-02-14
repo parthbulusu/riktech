@@ -65,6 +65,7 @@
 			</ul>
 			<ul class="menu-center ">
 			 <li class="menu-item">Welcome ${userProfile.firstName} ${userProfile.lastName}</li>
+			<li class="menu-item"><a href="/stp/discuss">| Discuss Features</a></li>
 			</ul>
 			<ul class="menu-right ">
 			<c:if test="${userProfile.adminRole}">

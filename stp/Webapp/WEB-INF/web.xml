@@ -35,6 +35,7 @@
   	<servlet-name>BrowseController</servlet-name>
   	<url-pattern>/showImage</url-pattern>
   	<url-pattern>/nextQuestion</url-pattern>
+  	<url-pattern>/discuss</url-pattern>  
   </servlet-mapping>
   <servlet-mapping>
   	<servlet-name>AppController</servlet-name>
@@ -63,8 +64,9 @@
             <url-pattern>/home</url-pattern> 
             <url-pattern>/browse/*</url-pattern> 
             <url-pattern>/find/*</url-pattern> 
-		  	<url-pattern>/showImage</url-pattern>
-		  	<url-pattern>/nextQuestion</url-pattern>            
+		  	<url-pattern>/showImage/*</url-pattern>
+		  	<url-pattern>/nextQuestion/*</url-pattern>  
+		  	<url-pattern>/discuss/*</url-pattern>           
         </web-resource-collection> 
         <auth-constraint> 
         	<role-name>stp-admin</role-name> 

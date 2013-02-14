@@ -27,6 +27,10 @@ public class BrowseController extends BaseController {
 	QuestionBankDao qbDao=QuestionBankDaoFactory.create();
 	AnswerChoicesDao acDao=AnswerChoicesDaoFactory.create();
 	private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.	
+	public void discuss(HttpServletRequest request, HttpServletResponse response){
+		dispatch(request, response, "/browse/discuss.jsp");
+
+	}
 	public void nextQuestion(HttpServletRequest request, HttpServletResponse response){
 		
 		String technologyId=request.getParameter("t_id");
